@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Input Parameters{% endblock %}
+{% block content %}
+<form action="#" method="post">
+  <p> Welcome to our personalized Twitter feeds application! Please submit the following details to start out program. </p>
+  <div>
+    <label for="user_ids">user_ids: </label>
+    <input type="text", name="user_ids", id="user_ids">
+    <label for="category">category: </label>
+    <input type="text", name="category", id="category">
+    <label for="max_tweets">max_tweets: </label>
+    <input type="number", name="max_tweets", id="max_tweets"> 
+  </div>
+  <p>
+    <input type="checkbox", id="test_checkbox", name="test">
+    <label for="test_checkbox">Testing</label>
+  </p>
+  <p> <input type="submit"></p>
+</form>
+{% endblock %}
