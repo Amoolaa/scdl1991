@@ -33,6 +33,9 @@ def collect_tweets(category, ids):
     for id in ids:
         response = client.get_users_tweets(id, max_results=100, tweet_fields=['lang', 'author_id', 'referenced_tweets'], expansions=['referenced_tweets.id'])
 
+        if response.data is None:
+            print("Oops!")
+
         output = []
         for tweet in response.data:
             if tweet.lang == 'en':

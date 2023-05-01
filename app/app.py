@@ -38,9 +38,9 @@ def update_tweet(id):
     session["model_trainer"].max_tweets -= 1
     session["model_trainer"].update_tweets_and_model(request.form["submit_button"])
     new_id = session["model_trainer"].get_latest_tweet()["id"]
-    return render_template("temp.html", id=new_id)
+    return render_template("temp.html", id=new_id, category=session["model_trainer"].category)
   else:
-    return render_template("temp.html", id=id)
+    return render_template("temp.html", id=id, category=session["model_trainer"].category)
 
 @app.route("/classify_tweets", methods=['POST', 'GET'])
 def classify():
@@ -52,5 +52,4 @@ if __name__ == "__main__":
 
   sess.init_app(app)
 
-  app.debug = True
   app.run()
