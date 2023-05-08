@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+  <p class="lead">Your category "{{category}}" has finished training.</p>
+  <a href="/model_training/submit" class="btn btn-outline-primary" role="button" aria-pressed="true">Create another category</a>
+  <a href="/classify_tweets" class="btn btn-outline-primary" role="button" aria-pressed="true">Classify tweets</a>
+</div>
+{% endblock %}

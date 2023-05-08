@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+  <p class="lead">Your feed "{{search_name}}" based on category "{{category}}": </p>
+  {% for id in tweet_ids %}
+    <blockquote class="twitter-tweet">
+      <a href="https://twitter.com/x/status/{{id}}"></a> 
+    </blockquote>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  {% endfor %}
+</div>
+{% endblock %}

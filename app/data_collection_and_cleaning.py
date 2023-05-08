@@ -4,6 +4,12 @@ import re
 import pandas as pd
 import emoji
 
+client = tweepy.Client(bearer_token = "AAAAAAAAAAAAAAAAAAAAAOqYlAEAAAAAmYjJKy1sb6pcRIj7YQbu%2Bz7Me80%3DjGIBoQOZnQqqUKVBHhHhU8zlZsqRftNTXBbYmicJnpYeRniEI7")
+
+def get_userid_from_handle(handle):
+    twitterid = client.get_user(username=handle[1:])
+    return twitterid.data.id
+
 def match_full_text(text, retweets):
     prefix = re.findall("RT @\w+: ", text)
     incomplete_content = text.strip(prefix[0]).strip("…")
@@ -26,15 +32,14 @@ def remove_emojis(text):
     return emoji.demojize(text, delimiters=(' ', ' '))
 
 def collect_tweets(category, ids):
-    client = tweepy.Client(bearer_token = "AAAAAAAAAAAAAAAAAAAAAOqYlAEAAAAAmYjJKy1sb6pcRIj7YQbu%2Bz7Me80%3DjGIBoQOZnQqqUKVBHhHhU8zlZsqRftNTXBbYmicJnpYeRniEI7")
-
+    
     filename = "temp/" + category + ".csv"
     dfs = []
     for id in ids:
         response = client.get_users_tweets(id, max_results=100, tweet_fields=['lang', 'author_id', 'referenced_tweets'], expansions=['referenced_tweets.id'])
 
         if response.data is None:
-            print("Oops!")
+            continue
 
         output = []
         for tweet in response.data:

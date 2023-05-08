@@ -2,40 +2,15 @@ import pickle
 import pandas as pd
 import numpy as np
 import argparse
-
 import data_collection_and_cleaning as dc
 
-import sklearn
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.neural_network import MLPClassifier
 
-
-class ModelTrainingRunner:
-
-  def __init__(self, ids, category, max_tweets, mode):
-    self.mode = mode
-    self.max_tweets = max_tweets
-    self.ids = ids
-    self.category = category
-
-    self.tweets, self.model = init(category, ids, mode)
-    self.tweets = tweets_classification(self.model, self.tweets)
-
-  def get_latest_tweet(self):
-    unlabelled_tweets = self.tweets[self.tweets['label'].isnull()]
-    unlabelled_tweets_0 = unlabelled_tweets[unlabelled_tweets['pred'] == 0]
-    return unlabelled_tweets_0.iloc[0]
-
-  # Updates tweets once
-  def update_tweets_and_model(self, response):
-    self.tweets, self.model = push_tweet_and_get_input(self.model, self.tweets, response)
-
-
-
-  
-
+def classify_tweets(category, user_ids, num_tweets, model):
+    df = collect_and_clean_tweets(category, user_ids)
+    return df
 
 # The function to start the script, including the whole process of the workflow.
 def start(ids, category, max_num_tweets_to_view, mode):
@@ -59,7 +34,7 @@ def start(ids, category, max_num_tweets_to_view, mode):
     print("End train....")
 
 # The function for program initialization
-def init(category, ids, mode='normal'):
+def init(category, ids, mode, clf):
     print("Starting to collect tweets from the entered users... ...")
 
     # Init according to the mode selected. 
@@ -73,7 +48,7 @@ def init(category, ids, mode='normal'):
     
     # Init database and model
     df = init_database(df)
-    model = init_model(df)
+    model = init_model(df, clf)
 
     return df, model
 
@@ -96,12 +71,13 @@ def init_database(df):
     return df
 
 # Init model for text classification.
-def init_model(df):
+def init_model(df, clf):
+    
     # create an empty model
     text_clf = Pipeline([
-     ('vect', CountVectorizer()),   # converts text into feature vectors (see bag-of-words)
-     ('tfidf', TfidfTransformer()), # converts to frequencies + applying weighting to certain tokens (see tf-idf)
-     ('clf', MLPClassifier(hidden_layer_sizes=(10), activation='relu', solver='lbfgs', random_state=42, max_iter=200)),      # model, we can replace this with whatever model we want
+     ('vect', CountVectorizer()),     # converts text into feature vectors (see bag-of-words)
+     ('tfidf', TfidfTransformer()),   # converts to frequencies + applying weighting to certain tokens (see tf-idf)
+     ('clf', clf),                    # model, we can replace this with whatever model we want
     ])
     
     # Train with init dataset df

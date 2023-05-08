@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Input Parameters{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+  <form action="#" method="post">
+    
+    <p class="lead"> Please submit the following details to train your model. </p>
+    <div class="container-fluid">
+      <label for="user_ids">twitter_handles: </label>
+      <input type="text", name="user_ids", id="user_ids">
+      <label for="category">category: </label>
+      <input type="text", name="category", id="category">
+      <label for="max_tweets">max_tweets: </label>
+      <input type="number", name="max_tweets", id="max_tweets">
+      <select name="clf_type" method="POST" action="/">
+        <option value="{{clf[0]}}" selected>{{clf[0]}}</option>
+        {% for model_type in clf[1:] %}
+          <option value="{{model_type}}">{{model_type}}</option>
+        {% endfor %}
+        </select>
+    </div>
+    <p>
+      <input type="checkbox", id="test_checkbox", name="test">
+      <label for="test_checkbox">Testing</label>
+    </p>
+    <p class="cotainer-fluid"> <input type="submit"></p>
+</div>
+{% endblock %}
