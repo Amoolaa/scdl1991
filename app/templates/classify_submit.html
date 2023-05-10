@@ -4,18 +4,27 @@
 <div class="container-fluid">
   <p class="lead">Select your category, the user's tweets you want to classify and the number of tweets to return.</p>
   <form action="#" method="post">
-  <select name="model_names" method="POST" action="/">
-  <option value="{{model_names[0]}}" selected>{{model_names[0]}}</option>
-  {% for model_name in model_names[1:] %}
-    <option value="{{model_name}}">{{model_name}}</option>
-  {% endfor %}
-  </select>
-  <label for="search_name">search_name: </label>
-  <input type="text", name="search_name", id="search_name">
-  <label for="handles">twitter_handles: </label>
-  <input type="text", name="handles", id="handles">
-  <label for="num_tweets">num_tweets: </label>
-  <input type="number", name="num_tweets", id="num_tweets">
-  <p><input type="submit"></p>
+    <div class="container-fluid">
+      <label for="model_names">Your categories:</label>
+      <select name="model_names" method="POST" action="/">
+      <option value="{{model_names[0]}}" selected>{{model_names[0]}}</option>
+      {% for model_name in model_names[1:] %}
+        <option value="{{model_name}}">{{model_name}}</option>
+      {% endfor %}
+      </select>
+    </div>
+    <div class="container-fluid">
+      <label for="search_name">Name of this feed: </label>
+      <input type="text", name="search_name", id="search_name" placeholder="Research">
+    </div>
+    <div class="container-fluid">
+      <label for="handles">Twitter handles: </label>
+      <input type="text", name="handles", id="handles" placeholder="@SydneyUni @UNSW @MonashUni">
+    </div>
+    <div class="container-fluid">
+      <label for="num_tweets">Maximum number of tweets to be shown: </label>
+      <input type="number", name="num_tweets", id="num_tweets" placeholder="10">
+    </div>
+    <div class="container-fluid"><input type="submit"></div>
 </div>
 {% endblock %}

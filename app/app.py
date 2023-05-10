@@ -6,7 +6,7 @@ from flask_session import Session
 from model_training import classify_tweets
 from model_training_runner import ModelTrainingRunner
 from data_collection_and_cleaning import get_userid_from_handle
-from models import clf_models
+from models import clf_models, clf_model_descriptions
 
 # 18481648 4860090466 337630337 65722733 712926286591762433 244168999 207581304 1333768694112129026 2427400058 697785916623036416 277622247 1192024076006699008 1107588313509253120
 
@@ -17,12 +17,12 @@ from models import clf_models
 """
 TODO
 
-- fix retrain 
-- take best scoring tweets
-- include description for what each of the models do
-- tidy up home page
-- tidy up input pages
-- include some info on how good the results were
+- fix retrain (DONE)
+- take best scoring tweets (NA)
+- include description for what each of the models do (tbd)
+- tidy up home page 
+- tidy up input pages 
+- include some info on how good the results were (NA)
 """
 
 
@@ -51,7 +51,7 @@ def submit():
     session["model_trainer"] = ModelTrainingRunner(ids=ids, category=category, max_tweets=max_tweets, mode=mode, clf=clf_models[clf_type])
     return redirect(url_for("update_tweet", id=session["model_trainer"].get_latest_tweet()["id"]))
   else:
-    return render_template("model_training_submit.html", clf=list(clf_models.keys()))
+    return render_template("model_training_submit.html", clf=list(clf_models.keys()), clf_model_descriptions=clf_model_descriptions)
 
 @app.route("/model_training/<id>",  methods=['POST', 'GET'])
 def update_tweet(id):
@@ -82,16 +82,16 @@ def classify():
     if request.method == "POST":
       search_name = request.form["search_name"]
       category_name = request.form["model_names"]
-      handles = request.form["user_ids"].split(" ")
+      handles = request.form["handles"].split(" ")
       ids = [get_userid_from_handle(handle) for handle in handles]
       num_tweets = int(request.form["num_tweets"])
 
       loaded_model = pickle.load(open(f"models/{category_name}.sav", 'rb'))
       tweets_df = classify_tweets(search_name, ids, num_tweets, loaded_model)
-      tweets_df["label"] = loaded_model.predict(tweets_df["text"])
       classified_tweets_df = tweets_df[tweets_df["label"] == 1]
 
-      
+      print(classified_tweets_df)
+
       return render_template("feed.html", tweet_ids=classified_tweets_df["id"].to_list()[:num_tweets], search_name=search_name, category=category_name)
     else:
       return render_template('classify_submit.html', model_names=model_names)

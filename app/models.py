@@ -22,3 +22,13 @@ clf_models = {
     "RF": RandomForestClassifier(bootstrap = True, max_depth= 7, max_features = 'sqrt', min_impurity_decrease =0.01, min_samples_leaf = 1, min_samples_split= 2, n_estimators = 150, oob_score = True),
     "HYBRID": VotingClassifier(estimators)
 }
+
+clf_model_descriptions = {
+    "NB": "Naive Bayes",
+    "LR": "Logistic Regression",
+    "DT": "Decision Tree",
+    "SVM": "Support Vector Machines (choose for precision, least unlikely to include irrelevant tweets)",
+    "MLP": "Multilayer Perceptron",
+    "RF": "Random Forest",
+    "HYBRID": "Hybrid model using DT, SVM and MLP (choose for recall, most likely to include irrelevant tweets)"
+}

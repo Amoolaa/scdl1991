@@ -10,6 +10,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 def classify_tweets(category, user_ids, num_tweets, model):
     df = collect_and_clean_tweets(category, user_ids)
+    df["label"] = model.predict(df["text"])
     return df
 
 # The function to start the script, including the whole process of the workflow.
